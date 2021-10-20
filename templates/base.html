@@ -11,12 +11,13 @@
     <nav class="navbar">
         <ul>
             {% if user %}
-            <li><a href="contact.asp">Create Playlist</a></li>
-            <li><a href="about.asp">Log out</a></li>
-            <li><a href="contact.asp">Reccomended Songs</a></li>
+            <li><a href="/playlist/add">Create Playlist</a></li>
+            <li><a href="/user/{{user.id}}">My Playlists</a></li>
+            <li><a href="/logout">Log out</a></li>
+            <li><a href="/reccomended">Reccomended Songs</a></li>
             {% else %}
-            <li><a href="default.asp">Log in</a></li>
-            <li><a href="news.asp">Sign Up</a></li>
+            <li><a href="/login">Log in</a></li>
+            <li><a href="/register">Sign Up</a></li>
             {% endif %}
           </ul>
     </nav>

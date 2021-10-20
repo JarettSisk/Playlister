@@ -1,0 +1,12 @@
+{% extends 'base.html'  %}
+
+{% block content %}
+<h1>Hi {{ user.username }}</h1>
+
+{% for playlist in user.playlists %}
+    <ul class="playlists">
+        <li class=playlist><a href="/playlist/{{playlist.id}}">{{ playlist.name }}</a></li>
+    </ul>
+{% endfor %}
+
+{% endblock %}

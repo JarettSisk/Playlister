@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+
+{% block content %}
+{% for song in playlist.songs %}
+    <ul class="songs">
+        <li class="song">{{song.title}} - {{song.artist}}</li>
+    </ul>
+{% endfor %}
+<h3>Add New Song</h3>
+<form method="POST" class="add-playlist-form">
+    <div class="form-group">
+        {{form.hidden_tag() }}
+        {{form.title.label}}
+        {{form.title}}
+        {{form.artist.label}}
+        {{form.artist}}
+        <button>Submit</button>
+    </div>
+</form>
+
+{% endblock %}
