@@ -13,8 +13,8 @@ class UserForm(FlaskForm):
 class PlaylistForm(FlaskForm):
     """Form for adding playlists."""
 
-    name = StringField("Playlist name", validators=[InputRequired()])
-    description = StringField("Playlist description", validators=[InputRequired()])
+    name = StringField("Name", validators=[InputRequired()])
+    description = StringField("Description", validators=[InputRequired()])
 
 class SongForm(FlaskForm):
     """Form for adding songs."""

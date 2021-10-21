@@ -80,6 +80,13 @@ class Song(db.Model):
     title = db.Column(db.Text, nullable=False)
     artist = db.Column(db.String, nullable=False)
 
+    def serialize(self):
+        return {
+            'id': self.id,
+            'title': self.title,
+            'artist': self.artist,
+        }
+
 
 
 class PlaylistSong(db.Model):

@@ -1,20 +1,18 @@
 {% extends 'base.html' %}
 
 {% block content %}
-{% for song in playlist.songs %}
-    <ul class="songs">
-        <li class="song">{{song.title}} - {{song.artist}}</li>
-    </ul>
-{% endfor %}
-<h3>Add New Song</h3>
-<form method="POST" class="add-playlist-form">
+<h1>{{playlist.name}}</h1>
+<ol class="song-list">
+</ol>
+
+<!-- NOTE We need to incorperate a remove button for each song! -->
+<form action="" method="POST" id="add-song-form">
     <div class="form-group">
-        {{form.hidden_tag() }}
-        {{form.title.label}}
-        {{form.title}}
-        {{form.artist.label}}
-        {{form.artist}}
-        <button>Submit</button>
+        <label for="title">Song Title</label>
+        <input type="text" name="title" id="title">
+        <label for="artist">Artist</label>
+        <input type="text" name="artist" id="artist">
+        <button type="submit" class="submit-btn">Add</button>
     </div>
 </form>
 

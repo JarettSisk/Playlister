@@ -2,11 +2,12 @@
 
 {% block content %}
 <h1>Hi {{ user.username }}</h1>
+<ul class="playlists">
 
 {% for playlist in user.playlists %}
-    <ul class="playlists">
-        <li class=playlist><a href="/playlist/{{playlist.id}}">{{ playlist.name }}</a></li>
-    </ul>
+    <li class=playlist><a href="/playlist/{{playlist.id}}">{{ playlist.name }}</a></li>
 {% endfor %}
+</ul>
+
 
 {% endblock %}

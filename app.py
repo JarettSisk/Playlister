@@ -1,5 +1,5 @@
 import re
-from flask import Flask, render_template, redirect, session, flash
+from flask import Flask, render_template, redirect, session, flash, request, jsonify
 from flask.helpers import url_for
 from flask_debugtoolbar import DebugToolbarExtension
 from models import connect_db, db, User, Playlist, Song, PlaylistSong
@@ -25,7 +25,7 @@ def home_page():
     if 'user_id' not in session:
         return render_template('index.html')
 
-    return redirect('/user')
+    return redirect(f"/user/{session['user_id']}")
 
 @app.route('/user/<int:user_id>')
 def show_playlists(user_id):
@@ -61,6 +61,31 @@ def login_user():
 
     return render_template('login.html', form=form)
 
+@app.route('/register', methods=['GET', 'POST'])
+def register_user():
+    """ Log in the user """
+    form = UserForm()
+    if form.validate_on_submit():
+        username = form.username.data
+        password = form.password.data
+        # Autheniticate the users credentials
+        user = User.register(User, username, password)
+
+        new_user = User(username = user.username, password = user.password)
+
+        db.session.add(new_user)
+        db.session.commit()
+
+        user = User.query.get_or_404(new_user.id)
+
+        if user:
+            session['user_id'] = user.id
+            return redirect(f"/user/{user.id}")
+        else:
+            form.username.errors = ['Invalid username/password.']
+
+    return render_template('register.html', form=form)
+
 @app.route('/logout')
 def logout_user():
     """ Log out the user """
@@ -69,32 +94,64 @@ def logout_user():
     return redirect('/')
 
 
-@app.route('/playlist/<int:playlist_id>', methods=['GET', 'POST'])
+@app.route('/playlist/<int:playlist_id>', methods=['GET'])
 def show_playlist(playlist_id):
-    """ Show the playlist and all of the songs within the playlist. Also a form to add more songs """
+    """ Show the playlist and all of the songs within the playlist."""
     user = User.query.get_or_404(session['user_id'])
     playlist = Playlist.query.get_or_404(playlist_id)
 
     if user:
-        form = SongForm()
-        if form.validate_on_submit():
-            title = form.title.data
-            artist = form.artist.data
-            new_song = Song(title=title, artist=artist)
-            db.session.add(new_song)
-            db.session.commit()
+        return render_template('playlist.html', user=user, playlist=playlist)
 
-            # Adding to the M2M table
-            playlist_song = PlaylistSong(
-            playlist_id = playlist.id,
-            song_id = new_song.id
-            )
-            db.session.add(playlist_song)
-            db.session.commit()
+@app.route('/playlist/<int:playlist_id>/songs', methods=[ 'GET'])
+def get_songs(playlist_id):
+    """ Get all the songs related to the playlist """
+    playlist = Playlist.query.get_or_404(playlist_id)
+    all_songs = [song.serialize() for song in playlist.songs]
+    return jsonify(songs=all_songs)
+        
 
-            return redirect(f"/playlist/{playlist_id}")
 
-    return render_template('playlist.html', user=user, playlist=playlist, form=form)
+@app.route('/playlist/<int:playlist_id>/add', methods=[ 'POST'])
+def add_song(playlist_id):
+    """ Add a new song to the playlist """
+    playlist = Playlist.query.get_or_404(playlist_id)
+    data = request.json
+    title = data['title']
+    artist = data['artist']
+    new_song = Song(title=title, artist=artist)
+    db.session.add(new_song)
+    db.session.commit()
+
+    # Adding to the M2M table
+    playlist_song = PlaylistSong(
+    playlist_id = playlist.id,
+    song_id = new_song.id
+    )
+    db.session.add(playlist_song)
+    db.session.commit()
+    
+    data = {
+        "title": new_song.title,
+        "artist": new_song.artist,
+        "song_id": new_song.id }
+
+    return (jsonify(data), 201)
+
+@app.route('/playlist/<int:playlist_id>/remove', methods=['POST'])
+def remove_song(playlist_id):
+    """ Remove a new song to the playlist """
+    data = request.json
+    song = Song.query.get_or_404(data['song_id'])
+    if song:
+
+        db.session.delete(song)
+        db.session.commit()
+
+        return ("Song sucessfully Deleted", 200)
+
+    return ('Oop. Something went wrong')
+
 
 @app.route('/playlist/add', methods=['GET', 'POST'])
 def creat_new_playlist():
@@ -119,3 +176,15 @@ def creat_new_playlist():
         return redirect(f"/user/{user.id}")
 
     return render_template('new-playlist.html', form=form, user=user)
+
+@app.route('/recommended')
+def show_recommended_songs():
+    if 'user_id' not in session:
+        flash("Please login first!", "danger")
+        return redirect('/login')
+    user = User.query.get_or_404(session['user_id'])
+    return render_template('recommended.html', user=user)
+
+# @app.route('/song/remove')
+# def remove_song():
+
