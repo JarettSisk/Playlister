@@ -9,12 +9,12 @@
 
 {% for field in form if field.widget.input_type != 'hidden' %}
     {% for error in field.errors %}
-    <span class="text-danger">{{ error }}</span>
+    <span class="error">{{ error }}</span>
     {% endfor %}
     {{ field(placeholder=field.label.text, class="form-control") }}
 {% endfor %}
 
-<button class="btn btn-primary btn-block btn-lg">Sign up</button>
+<button class="login-button">SIGN UP</button>
 </form>
 
 {% endblock %}

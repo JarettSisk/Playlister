@@ -80,6 +80,7 @@ class Song(db.Model):
     title = db.Column(db.Text, nullable=False)
     artist = db.Column(db.String, nullable=False)
 
+    # Return a dict of this songs info for passing json to the client
     def serialize(self):
         return {
             'id': self.id,

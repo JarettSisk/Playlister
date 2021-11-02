@@ -1,0 +1,189 @@
+
+body * {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+}
+
+/* Nav */
+.navbar ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    background-color: rgb(78, 78, 78);
+  }
+  
+.navbar li {
+    float: left;
+  }
+  
+.navbar li a {
+    display: block;
+    color: rgb(255, 255, 255);
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+  }
+  
+.navbar li a:hover {
+    background-color: rgb(54, 54, 54);
+  }
+
+.playlists {
+    width: 300px;
+    margin: 0;
+    padding: 0;
+    list-style-type: none;
+    
+}
+
+.playlist a {
+    text-decoration: none;
+    display: block;
+    width: 300px;
+    padding: 16px;
+    color: white;
+    background-color: rgb(1, 137, 161);
+}
+
+.playlist {
+    margin: 0 0 10px 0;
+    padding: 0;
+    text-align: center;
+    cursor: pointer;
+}
+
+.playlist a:hover {
+    background-color: rgb(78, 78, 78);
+}
+  /* Remove song btn */
+.remove-btn-form {
+    display: inline;
+    margin: 10px;
+}
+
+.remove {
+    cursor: pointer;
+    background-color: rgb(255, 151, 151);
+    border: none;
+    border-radius: 2px;
+    color: rgb(0, 0, 0);
+    padding: 3px 6px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 10px;
+}
+
+/* Print playlist button */
+.print-playlist-button {
+    cursor: pointer;
+    margin-top: 20px;
+}
+
+.button {
+    width: 300px;
+    margin-top: 12px;
+    background-color: rgb(1, 137, 161);
+    border: none;
+    border-radius: 2px;
+    color: rgb(255, 255, 255);
+    padding: 8px 16px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+  }
+
+.button:hover {
+    background-color: rgb(78, 78, 78);
+}
+
+.delete-playlist-btn {
+    background-color: rgb(175, 55, 55);
+}
+
+.add-song-btn {
+    background-color: rgb(1, 137, 161);
+    cursor: pointer;
+    border: none;
+    border-radius: 2px;
+    color: rgb(255, 255, 255);
+    padding: 3px 10px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 14px;
+}
+
+.add-song-btn:hover {
+    background-color: rgb(78, 78, 78);
+}
+
+.new-playlist-btn {
+    background-color: rgb(1, 137, 161);
+    cursor: pointer;
+    border: none;
+    border-radius: 2px;
+    color: rgb(255, 255, 255);
+    padding: 3px 10px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 14px;
+}
+
+.login-button {
+    background-color: rgb(1, 137, 161);
+    cursor: pointer;
+    border: none;
+    border-radius: 2px;
+    color: rgb(255, 255, 255);
+    padding: 3px 10px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 14px;
+}
+
+.playlist-description {
+    margin-left: 10px;
+    font-style: italic;
+}
+
+.song-popup {
+    width: 375px;
+    margin: 0;
+    padding: 0 0 0 70px;
+    list-style-type: none;
+    color: white;
+}
+
+.song-popup li {
+    margin: 6px;
+    cursor: pointer;
+    padding: 4px;
+    background-color: rgb(1, 137, 161);
+}
+
+.song-popup li:hover {
+    background-color: rgb(78, 78, 78);
+}
+
+.song {
+    min-width: 400px;
+}
+
+.error {
+    display: block;
+}
+
+
+
+
+
+/* Hide certain elements so they dont print out */
+@media print {
+    .hidden-print {
+      display: none !important;
+    }
+  }

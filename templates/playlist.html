@@ -1,19 +1,29 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<h1>{{playlist.name}}</h1>
+<input type="button" value="Print this playlist" onClick="window.print()" class="button print-playlist-button hidden-print">
+<form action="/playlist/{{playlist.id}}/remove", method="post" class="hidden-print">
+    <button type="submit" class="button delete-playlist-btn">Delete Playlist</button>
+</form>
+<h1 class="playlist-name">{{playlist.name}}</h1>
+<p class="playlist-description">{{playlist.description}}</p>
+
+<hr>
 <ol class="song-list">
 </ol>
 
 <!-- NOTE We need to incorperate a remove button for each song! -->
-<form action="" method="POST" id="add-song-form">
+<form action="" method="POST" id="add-song-form" class="hidden-print">
     <div class="form-group">
         <label for="title">Song Title</label>
         <input type="text" name="title" id="title">
         <label for="artist">Artist</label>
         <input type="text" name="artist" id="artist">
-        <button type="submit" class="submit-btn">Add</button>
+        <button type="submit" class="add-song-btn">ADD</button>
     </div>
 </form>
+<ol class="song-popup">
+
+</ol>
 
 {% endblock %}

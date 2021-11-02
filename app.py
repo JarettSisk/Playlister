@@ -1,22 +1,21 @@
 import re
 from flask import Flask, render_template, redirect, session, flash, request, jsonify
 from flask.helpers import url_for
-from flask_debugtoolbar import DebugToolbarExtension
+# from flask_debugtoolbar import DebugToolbarExtension
 from models import connect_db, db, User, Playlist, Song, PlaylistSong
 from forms import UserForm, SongForm, PlaylistForm
-# from sqlalchemy.exc import IntegrityError
+from sqlalchemy.exc import IntegrityError
 
 app = Flask(__name__)
 app.config["SQLALCHEMY_DATABASE_URI"] = "postgresql:///playlister_database"
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 app.config["SQLALCHEMY_ECHO"] = True
 app.config["SECRET_KEY"] = "abc123"
-app.config['DEBUG_TB_INTERCEPT_REDIRECTS'] = False
-
+# app.config['DEBUG_TB_INTERCEPT_REDIRECTS'] = False
 
 connect_db(app)
 
-toolbar = DebugToolbarExtension(app)
+# toolbar = DebugToolbarExtension(app)
 
 
 @app.route('/')
@@ -63,27 +62,34 @@ def login_user():
 
 @app.route('/register', methods=['GET', 'POST'])
 def register_user():
-    """ Log in the user """
+    """ Register in the user """
     form = UserForm()
     if form.validate_on_submit():
+        # Saving the form data
         username = form.username.data
         password = form.password.data
-        # Autheniticate the users credentials
+
+        # Register the user and handle integegrity errors
         user = User.register(User, username, password)
+        try:
+            # Create the new user and add to the DB
+            new_user = User(username = user.username, password = user.password)
+            db.session.add(new_user)
+            db.session.commit()
+        except IntegrityError:
+            form.username.errors = ['Invalid username/password.']
+            return render_template('register.html', form=form)
 
-        new_user = User(username = user.username, password = user.password)
-
-        db.session.add(new_user)
-        db.session.commit()
-
+        # Fetch the new user from DB
         user = User.query.get_or_404(new_user.id)
-
+        # If found, add users id to the session
         if user:
             session['user_id'] = user.id
             return redirect(f"/user/{user.id}")
         else:
             form.username.errors = ['Invalid username/password.']
-
+            
+    # Get the register page
     return render_template('register.html', form=form)
 
 @app.route('/logout')
@@ -112,7 +118,7 @@ def get_songs(playlist_id):
         
 
 
-@app.route('/playlist/<int:playlist_id>/add', methods=[ 'POST'])
+@app.route('/playlist/<int:playlist_id>/add-song', methods=[ 'POST'])
 def add_song(playlist_id):
     """ Add a new song to the playlist """
     playlist = Playlist.query.get_or_404(playlist_id)
@@ -138,7 +144,7 @@ def add_song(playlist_id):
 
     return (jsonify(data), 201)
 
-@app.route('/playlist/<int:playlist_id>/remove', methods=['POST'])
+@app.route('/playlist/<int:playlist_id>/remove-song', methods=['POST'])
 def remove_song(playlist_id):
     """ Remove a new song to the playlist """
     data = request.json
@@ -155,6 +161,7 @@ def remove_song(playlist_id):
 
 @app.route('/playlist/add', methods=['GET', 'POST'])
 def creat_new_playlist():
+    """ Add a new playlist"""
     # Checking for logged in user
     if 'user_id' not in session:
         flash("Please login first!", "danger")
@@ -177,14 +184,25 @@ def creat_new_playlist():
 
     return render_template('new-playlist.html', form=form, user=user)
 
-@app.route('/recommended')
-def show_recommended_songs():
+@app.route('/playlist/<int:playlist_id>/remove', methods=['POST'])
+def remove_playlist(playlist_id):
+    """ Delete the playlist """
+    # Checking for logged in user
     if 'user_id' not in session:
         flash("Please login first!", "danger")
         return redirect('/login')
-    user = User.query.get_or_404(session['user_id'])
-    return render_template('recommended.html', user=user)
 
-# @app.route('/song/remove')
-# def remove_song():
+    playlist = Playlist.query.get_or_404(playlist_id)
+    if playlist:
+        db.session.delete(playlist)
+        db.session.commit()
+        flash('Playlist deleted')
+
+    return redirect("/")
+
+@app.route('/faq')
+def show_faq_page():
+    user = User.query.get_or_404(session['user_id'])
+    return render_template('faq.html', user=user)
+
 
