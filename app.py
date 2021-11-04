@@ -7,7 +7,7 @@ from forms import UserForm, SongForm, PlaylistForm
 from sqlalchemy.exc import IntegrityError
 
 app = Flask(__name__)
-app.config["SQLALCHEMY_DATABASE_URI"] = "postgresql:///playlister_database"
+app.config["SQLALCHEMY_DATABASE_URI"] = os.environ.get("DATABASE_URL", "postgresql:///playlister_database")
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 app.config["SQLALCHEMY_ECHO"] = True
 app.config["SECRET_KEY"] = os.environ.get('SECRET_KEY', 'secret1234321')
