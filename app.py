@@ -8,10 +8,11 @@ from forms import UserForm, SongForm, PlaylistForm
 from sqlalchemy.exc import IntegrityError
 
 app = Flask(__name__)
+flask_env = os.environ.get('FLASK_ENV')
 uri = os.getenv("DATABASE_URL")  # or other relevant config var
 if uri.startswith("postgres://"):
     uri = uri.replace("postgres://", "postgresql://", 1)
-if os.environ.get['FLASK_ENV'] == 'development':
+if flask_env == 'development':
     app.config["SQLALCHEMY_DATABASE_URI"] = "postgresql:///playlister_database"
 else:
     app.config["SQLALCHEMY_DATABASE_URI"] = uri
