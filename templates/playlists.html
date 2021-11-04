@@ -2,6 +2,9 @@
 
 {% block content %}
 <h1>Hi {{ user.username }}</h1>
+<button onclick="document.location='/playlist/add'" class="button create-playlist-button">Create A Playlist</button>
+
+<h2>My Playlists</h2>
 <ul class="playlists">
 {% for playlist in user.playlists %}
     <li class=playlist><a href="/playlist/{{playlist.id}}">{{ playlist.name }}</a></li>

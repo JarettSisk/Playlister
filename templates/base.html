@@ -11,15 +11,15 @@
     <nav class="navbar hidden-print">
         <ul>
             {% if user %}
-            <li><a href="/playlist/add">Create Playlist</a></li>
+            <li><a href="/playlist/add">Create A Playlist</a></li>
             <li><a href="/user/{{user.id}}">My Playlists</a></li>
-            <li><a href="/logout">Log out</a></li>
             <li><a target="_blank" rel="noopener noreferrer" href="https://www.djintelligence.com/charts/?source=mobilebeat.com">Recommended Songs</a></li>
             <li><a href="/faq">FAQ</a></li>
+            <li><a href="/logout">Log out</a></li>
             {% else %}
-            <li><a href="/login">Log in</a></li>
             <li><a href="/register">Sign Up</a></li>
             <li><a href="/faq">FAQ</a></li>
+            <li><a href="/login">Log in</a></li>
             {% endif %}
           </ul>
     </nav>

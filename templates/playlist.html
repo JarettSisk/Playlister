@@ -3,7 +3,7 @@
 {% block content %}
 <input type="button" value="Print this playlist" onClick="window.print()" class="button print-playlist-button hidden-print">
 <form action="/playlist/{{playlist.id}}/remove", method="post" class="hidden-print">
-    <button type="submit" class="button delete-playlist-btn">Delete Playlist</button>
+    <button type="submit" class="button delete-playlist-btn">Delete this playlist</button>
 </form>
 <h1 class="playlist-name">{{playlist.name}}</h1>
 <p class="playlist-description">{{playlist.description}}</p>
