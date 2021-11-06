@@ -4,17 +4,16 @@ from flask import Flask, render_template, redirect, session, flash, request, jso
 from flask.helpers import url_for
 # from flask_debugtoolbar import DebugToolbarExtension
 from models import connect_db, db, User, Playlist, Song, PlaylistSong
-from forms import UserForm, SongForm, PlaylistForm
+from forms import UserForm, PlaylistForm
 from sqlalchemy.exc import IntegrityError
 
 app = Flask(__name__)
 flask_env = os.environ.get('FLASK_ENV')
-uri = os.getenv("DATABASE_URL")  # or other relevant config var
-if uri.startswith("postgres://"):
-    uri = uri.replace("postgres://", "postgresql://", 1)
+uri = os.environ.get("DATABASE_URL")
 if flask_env == 'development':
     app.config["SQLALCHEMY_DATABASE_URI"] = "postgresql:///playlister_database"
 else:
+    uri = uri.replace("postgres://", "postgresql://", 1)
     app.config["SQLALCHEMY_DATABASE_URI"] = uri
 
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False

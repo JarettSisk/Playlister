@@ -32,7 +32,7 @@ function createSongDom(title, artist, id) {
           .catch(function (error) {
             console.log(error);
           });
-        appendSongs();
+        // appendSongs();
         removeBtnForm.parentElement.remove();
       })
 
