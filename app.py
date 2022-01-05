@@ -211,6 +211,9 @@ def remove_playlist(playlist_id):
 @app.route('/faq')
 def show_faq_page():
     user = User.query.get_or_404(session['user_id'])
-    return render_template('faq.html', user=user)
+    if user:
+        return render_template('faq.html', user=user)
+    else:
+        return render_template('faq.html')
 
 
